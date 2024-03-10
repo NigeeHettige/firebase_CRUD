@@ -117,6 +117,7 @@ class _EmployeeState extends State<Employee> {
                     onPressed: () async {
                       String id = randomAlphaNumeric(10);
                       Map<String, dynamic> employeeInfoMap = {
+                        "Id" : id,
                         "Name": namecontroller.text,
                         "Age": agecontroller.text,
                         "Location": locationcontroller.text,
