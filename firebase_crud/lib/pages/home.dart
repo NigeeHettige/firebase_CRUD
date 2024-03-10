@@ -65,13 +65,28 @@ class _HomeState extends State<Home> {
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20.0),
                                   ),
+                                  const Spacer(),
                                   GestureDetector(
                                     onTap: () {
                                       EditEmployeeDetail(ds["Id"]);
+                                      namecontroller.text = ds["Name"];
+                                      agecontroller.text = ds["Age"];
+                                      locationcontroller.text = ds["Location"];
                                     },
                                     child: const Icon(
                                       Icons.edit,
                                       color: Colors.orange,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 5.0),
+                                  GestureDetector(
+                                    onTap: () async {
+                                      await DatabaseMethods()
+                                          .deleteEmployeeDetails(ds["Id"]);
+                                    },
+                                    child: const Icon(
+                                      Icons.delete,
+                                      color: Color.fromARGB(255, 231, 113, 104),
                                     ),
                                   ),
                                 ],
@@ -153,6 +168,7 @@ class _HomeState extends State<Home> {
         builder: (context) => AlertDialog(
           content: Container(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
@@ -250,6 +266,24 @@ class _HomeState extends State<Home> {
                 const SizedBox(
                   height: 30.0,
                 ),
+                Center(
+                    child: ElevatedButton(
+                  onPressed: () async {
+                    Map<String, dynamic> updateInfo = {
+                      "Name": namecontroller.text,
+                      "Age": agecontroller.text,
+                      "Location": locationcontroller.text,
+                      "Id": id,
+                    };
+
+                    await DatabaseMethods()
+                        .updateEmployeeDetails(id, updateInfo)
+                        .then((value) {
+                      Navigator.pop(context);
+                    });
+                  },
+                  child: const Text("Update"),
+                )),
               ],
             ),
           ),
